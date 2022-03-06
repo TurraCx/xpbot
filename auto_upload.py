@@ -2039,7 +2039,7 @@ for file in upload_queue:
             console.rule(f"Dupe Check [bold]({tracker})[/bold]", style='red', align='center')
 
             # Call the function that will search each site for dupes and return a similarity percentage, if it exceeds what the user sets in config.env we skip the upload
-            dupe_response = search_for_dupes_api(acronym_to_tracker[str(tracker).lower()], torrent_info["imdb"], torrent_info=torrent_info, tracker_api=temp_tracker_api_key)
+            dupe_response = search_for_dupes_api(acronym_to_tracker[str(tracker).lower()], torrent_info["imdb"], torrent_info=torrent_info, tracker_api=temp_tracker_api_key, auto_mode=auto_mode)
             # True == dupe_found
             # False == no_dupes/continue upload
             if dupe_response:
@@ -2050,7 +2050,7 @@ for file in upload_queue:
 
                 # If dupe was found & the script is auto_mode OR if the user responds with 'n' for the 'dupe found, continue?' prompt
                 #  we will essentially stop the current 'for loops' iteration & jump back to the beginning to start next cycle (if exists else quits)
-                torrent_info["failedname"] = torrent_info["failedname"] + "-DUPE"
+
                 quit_log_reason(reason="Dupe detected")
 
 
@@ -2122,7 +2122,7 @@ for file in upload_queue:
     #need to do documentation on how to download and patch fast_resume 
     new_torrent_file = re.escape(os.path.basename(torrent_file))
     torrent_file = re.escape(torrent_file)
-    os.system("~/bin/rtorrent_fast_resume.pl " + move_locations["media"] + " < " + torrent_file + " > " + move_locations["torrent"] + "/" + new_torrent_file)
+    os.system(working_folder + "/rtorrent_fast_resume.pl " + move_locations["media"] + " < " + torrent_file + " > " + move_locations["torrent"] + "/" + new_torrent_file)
 
                 # Torrent Info
     torrent_info_table = Table(show_header=True, header_style="bold cyan")
